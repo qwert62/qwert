@@ -1,0 +1,162 @@
+######sum of numbers
+
+#!/bin/bash
+
+# Prompt the user for input
+# echo "Enter the first number:"
+read num1
+
+# echo "Enter the second number:"
+read num2
+
+# Calculate the sum
+sum=$(($num1 + $num2))
+
+# Display the result
+echo "The sum of $num1 and $num2 is $sum"
+
+############average of numbers
+
+
+#!/bin/bash
+
+# Function to calculate average
+average(){
+    local count=$#
+    sum=$(($1 + $2))
+    result=$((sum / count))
+    echo "The average of $1 and $2 is $result"
+}
+
+# Function to find the maximum
+maximum(){
+    if [[ $1 -gt $2 ]]; then
+        echo "$1 is greater than $2"
+    else
+        echo "$2 is greater than $1"
+    fi
+}
+
+# Function to find the minimum
+minimum(){
+    if [[ $1 -lt $2 ]]; then
+        echo "$1 is minimum than $2"
+    else
+        echo "$2 is minimum than $1"
+    fi
+}
+
+# Display menu
+echo "-----------------------------------------------"
+echo "a for average of given numbers"
+echo "b for maximum number"
+echo "c for minimum number"
+
+# Get the choice from user
+echo "Enter your choice:"
+read cho
+
+# Prompt for numbers input
+echo "Enter the first number:"
+read num1
+echo "Enter the second number:"
+read num2
+
+# Perform action based on choice
+case $cho in
+    a)
+        average $num1 $num2
+        ;;
+    b)
+        maximum $num1 $num2
+        ;;
+    c)
+        minimum $num1 $num2
+        ;;
+    *)
+        echo "Invalid input"
+        ;;
+esac
+
+##############file check
+
+#!/bin/bash
+
+# Prompt for file input if not provided
+if [ -z "$1" ]; then
+  read -p "Enter the file path: " file
+else
+  file="$1"
+fi
+
+# Check if the file exists
+if [ ! -e "$file" ]; then
+  echo "File does not exist."
+  exit 1
+fi
+
+# Check file type
+if [ -b "$file" ]; then
+  echo "$file is a Block Device File (BDF)."
+elif [ -c "$file" ]; then
+  echo "$file is a Character Device File (CDF)."
+elif [ -L "$file" ]; then
+  echo "$file is a symbolic link."
+elif [ -S "$file" ]; then
+  echo "$file is a socket."
+elif [ -f "$file" ]; then
+  echo "$file is an ordinary file."
+elif [ -d "$file" ]; then
+  echo "$file is a directory."
+else
+  echo "File type is unknown or special."
+fi
+
+# Display file permissions
+echo "File permissions for $file:"
+ls -l "$file" | awk '{print $1}'
+
+##############palindrome
+
+#!/bin/bash
+
+# Prompt the user to enter a string
+echo "Enter a string:"
+read str
+
+# Reverse the input string
+reversed_str=$(echo "$str" | rev)
+
+# Check if the reversed string matches the original
+if [ "$str" == "$reversed_str" ]; then
+    echo "The string '$str' is a palindrome."
+else
+    echo "The string '$str' is not a palindrome."
+fi
+
+############bubble sort
+
+#!/bin/bash
+
+bubble_sort() {
+  arr=("$@")
+  n=${#arr[@]}
+
+  for ((i = 0; i < n-1; i++)); do
+    for ((j = 0; j < n-i-1; j++)); do
+      if [ "${arr[j]}" -gt "${arr[$((j+1))]}" ]; then
+        temp="${arr[j]}"
+        arr[$j]="${arr[$((j+1))]}"
+        arr[$((j+1))]="$temp"
+      fi
+    done
+  done
+
+  echo "Sorted array: ${arr[@]}"
+}
+
+# Prompt user for array elements
+echo "Enter array elements separated by spaces:"
+read -a arr_input
+
+bubble_sort "${arr_input[@]}"

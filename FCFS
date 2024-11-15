@@ -1,0 +1,63 @@
+#include <iostream>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+int main() {
+    int tracks, ShiftTime, queueSize, initPos;
+    
+    // Input for total tracks and other data
+    cout << "Enter the Total Number of tracks: ";
+    cin >> tracks;
+    
+    cout << "Enter the Time taken by the head to move one track to another: ";
+    cin >> ShiftTime;
+    
+    cout << "Enter the Size of Request Queue: ";
+    cin >> queueSize;
+    
+    queue<int> Q;
+    cout << "Enter the request tracks inside the queue: ";
+    for (int i = 0; i < queueSize; i++) {
+        int j;
+        cin >> j;
+        Q.push(j);
+    }
+    
+    // Initial position of the read-write head
+    cout << "Enter the Initial Position of read-write head: ";
+    cin >> initPos;
+    
+    int Total_SeekTime = 0;
+    int seek = 0;
+
+    // Output Table Header
+    cout << "||\tCurrent Position\t||\tFinal Position\t||\tSeek Time\t||\n";
+    
+    // FCFS Algorithm
+    while (!Q.empty()) {
+        int finalPos = Q.front();
+        Q.pop();
+        
+        if (finalPos >= tracks) {
+            cout << "Track " << finalPos << " Not Available\n";
+        } else {
+            int SeekTime = abs(finalPos - initPos) * ShiftTime;
+            cout << "||\t\t" << initPos << "\t\t||\t\t" << finalPos << "\t\t||\t\t" << SeekTime << "\t||\n";
+            Total_SeekTime += SeekTime;
+            initPos = finalPos;
+        }
+    }
+    
+    // Final output for total seek time
+    cout << "Total Seek Time to Process Request Queue: " << Total_SeekTime << endl;
+    
+    return 0;
+}
+
+######input
+Enter the Total Number of tracks: 200
+Enter the Time taken by the head to move one track to another: 1
+Enter the Size of Request Queue: 5
+Enter the request tracks inside the queue: 50 100 150 60 120
+Enter the Initial Position of read-write head: 70

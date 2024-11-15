@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+int main() {
+    int tracks, ShiftTime, queueSize, initPos;
+    
+    cout << "Enter the Total Number of tracks : ";
+    cin >> tracks;
+    
+    cout << "Enter the Time taken by the head to move one track to another : ";
+    cin >> ShiftTime;
+    
+    cout << "Enter the Size of Request Queue : ";
+    cin >> queueSize;
+    
+    vector<int> requestQueue(queueSize);
+    cout << "Enter the initial position of read-write head : ";
+    cin >> initPos;
+    
+    cout << "Enter the requested Tracks : ";
+    for (int i = 0; i < queueSize; i++) {
+        cin >> requestQueue[i];
+    }
+
+    sort(requestQueue.begin(), requestQueue.end());
+    int min = 0, max = 0, Total_SeekTime = 0;
+
+    // Find initial min and max bounds based on initPos
+    for (int i = 0; i < queueSize; i++) {
+        if (requestQueue[i] > initPos) {
+            min = i - 1;
+            max = i;
+            break;
+        }
+    }
+
+    cout << "||\tCurrent Position\t||\tFinal Position\t\t||\tSeek Time\t\t||" << endl;
+
+    if (abs(initPos - requestQueue[min]) < abs(initPos - requestQueue[max])) {
+        for (int i = min; i >= 0; i--) {
+            int finalPos = requestQueue[i];
+            if (finalPos >= tracks) {
+                cout << "Track " << finalPos << " Not Available" << endl;
+            } else {
+                int SeekTime = abs(finalPos - initPos) * ShiftTime;
+                cout << "||\t\t" << initPos << "\t\t||\t\t" << finalPos << "\t\t||\t\t" << SeekTime << "\t\t||" << endl;
+                Total_SeekTime += SeekTime;
+                initPos = finalPos;
+            }
+        }
+        for (int i = max; i < queueSize; i++) {
+            int finalPos = requestQueue[i];
+            if (finalPos >= tracks) {
+                cout << "Track " << finalPos << " Not Available" << endl;
+            } else {
+                int SeekTime = abs(finalPos - initPos) * ShiftTime;
+                cout << "||\t\t" << initPos << "\t\t||\t\t" << finalPos << "\t\t||\t\t" << SeekTime << "\t\t||" << endl;
+                Total_SeekTime += SeekTime;
+                initPos = finalPos;
+            }
+        }
+    } else {
+        for (int i = max; i < queueSize; i++) {
+            int finalPos = requestQueue[i];
+            if (finalPos >= tracks) {
+                cout << "Track " << finalPos << " Not Available" << endl;
+            } else {
+                int SeekTime = abs(finalPos - initPos) * ShiftTime;
+                cout << "||\t\t" << initPos << "\t\t||\t\t" << finalPos << "\t\t||\t\t" << SeekTime << "\t\t||" << endl;
+                Total_SeekTime += SeekTime;
+                initPos = finalPos;
+            }
+        }
+        for (int i = min; i >= 0; i--) {
+            int finalPos = requestQueue[i];
+            if (finalPos >= tracks) {
+                cout << "Track " << finalPos << " Not Available" << endl;
+            } else {
+                int SeekTime = abs(finalPos - initPos) * ShiftTime;
+                cout << "||\t\t" << initPos << "\t\t||\t\t" << finalPos << "\t\t||\t\t" << SeekTime << "\t\t||" << endl;
+                Total_SeekTime += SeekTime;
+                initPos = finalPos;
+            }
+        }
+    }
+
+    cout << "Total Seek Time to Process Request Queue : " << Total_SeekTime << endl;
+
+    return 0;
+}
+
+
+###input
+                 Total Number of tracks: 200
+Time taken by the head to move one track to another: 2 (for example, 2 ms)
+Size of Request Queue: 5
+Initial Position of Read-Write Head: 50
+Requested Tracks: 95 180 34 119 11
